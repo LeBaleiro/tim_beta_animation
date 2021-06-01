@@ -47,17 +47,26 @@ class _BottomBarState extends State<BottomBar> with SingleTickerProviderStateMix
     });
   }
 
+  double itemBoxSize = 0.0;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    itemBoxSize = (MediaQuery.of(context).size.width - padding / 8) / widget.items.length;
+    double newPoint = (padding / 8) + indexSelected * (3 * itemBoxSize - cutWidth) / 2;
+    animation = Tween<double>(begin: _currentPoint, end: newPoint).animate(controller);
+  }
+
   @override
   void dispose() {
     controller.dispose();
     super.dispose();
   }
 
+  double _currentPoint = 0.0;
+  double cutWidth = 140;
   @override
   Widget build(BuildContext context) {
-    double itemBoxSize = (MediaQuery.of(context).size.width - padding / 8) / widget.items.length;
-    double _currentPoint = 0.0;
-
     return Stack(
       children: [
         Positioned(
@@ -79,7 +88,7 @@ class _BottomBarState extends State<BottomBar> with SingleTickerProviderStateMix
             animation: animation,
             builder: (context, child) {
               return ClipPath(
-                clipper: CustomBottomBarClipper(startPoint: animation.value),
+                clipper: CustomBottomBarClipper(startPoint: animation.value, cutWidth: cutWidth),
                 child: child,
               );
             },
@@ -97,13 +106,18 @@ class _BottomBarState extends State<BottomBar> with SingleTickerProviderStateMix
                       onTap: () {
                         iconAnimation = Tween<double>(begin: indexSelected.toDouble(), end: items.indexOf(item).toDouble()).animate(controller);
                         indexSelected = items.indexOf(item);
-                        double newPoint = (padding / 8) + indexSelected * itemBoxSize;
+                        double newPoint = (padding / 8) + indexSelected * (3 * itemBoxSize - cutWidth) / 2;
                         controller.reset();
                         animation = Tween<double>(begin: _currentPoint, end: newPoint).animate(controller);
                         _currentPoint = newPoint;
                         controller.forward();
                       },
-                      child: BottomBarItemWidget(item: item),
+                      child: BottomBarItemWidget(
+                        item: item,
+                        duration: duration,
+                        showIcon: items.indexOf(item) != indexSelected,
+                        controller: controller,
+                      ),
                     ),
                   ),
                 ],

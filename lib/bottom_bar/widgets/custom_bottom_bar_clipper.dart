@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 
 class CustomBottomBarClipper extends CustomClipper<Path> {
   final double startPoint;
+  final double cutWidth;
 
   CustomBottomBarClipper({
     required this.startPoint,
+    required this.cutWidth,
   });
 
   @override
   getClip(Size size) {
     var path = Path();
-    var cutWidth = 140;
     var widthParcel = cutWidth / 14;
     var cutHeight = 50;
     var heightParcel = cutHeight / 6;
