@@ -35,6 +35,14 @@ class _BottomBarItemWidgetState extends State<BottomBarItemWidget> with SingleTi
     iconPositionAnimation = widget.showIcon ? Tween<double>(begin: 0, end: 0).animate(widget.controller) : Tween<double>(begin: 0, end: 25).animate(widget.controller);
   }
 
+  Duration durationDivided(Duration duration, int divider) {
+    return Duration(
+      seconds: widget.duration.inSeconds ~/ divider,
+      milliseconds: widget.duration.inMilliseconds ~/ divider,
+      microseconds: widget.duration.inMicroseconds ~/ divider,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -45,11 +53,7 @@ class _BottomBarItemWidgetState extends State<BottomBarItemWidget> with SingleTi
               return Transform.translate(
                 offset: Offset(0, iconPositionAnimation.value),
                 child: AnimatedOpacity(
-                  duration: Duration(
-                    seconds: widget.duration.inSeconds ~/ 3,
-                    milliseconds: widget.duration.inMilliseconds ~/ 3,
-                    microseconds: widget.duration.inMicroseconds ~/ 3,
-                  ),
+                  duration: durationDivided(widget.duration, 5),
                   opacity: widget.showIcon ? 1.0 : 0.0,
                   child: Container(
                     height: 30,

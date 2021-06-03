@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class BolinhaWidget extends StatelessWidget {
+class BallWidget extends StatelessWidget {
   final Widget icon;
 
-  const BolinhaWidget({Key? key, required this.icon}) : super(key: key);
+  const BallWidget({Key? key, required this.icon}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
